@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
+import 'package:permission_handler/permission_handler.dart';
 import '../../theme/app_theme.dart';
 import '../../utils/constants.dart';
 
@@ -12,8 +13,40 @@ class QrScannerScreen extends StatefulWidget {
 }
 
 class _QrScannerScreenState extends State<QrScannerScreen> {
-  final MobileScannerController _controller = MobileScannerController();
+  final MobileScannerController _controller = MobileScannerController(
+    detectionSpeed: DetectionSpeed.noDuplicates,
+    facing: CameraFacing.back,
+  );
   bool _hasScanned = false;
+  bool _hasPermission = false;
+  bool _isCheckingPermission = true;
+  
+  @override
+  void initState() {
+    super.initState();
+    _checkCameraPermission();
+  }
+  
+  Future<void> _checkCameraPermission() async {
+    final status = await Permission.camera.status;
+    if (status.isGranted) {
+      setState(() {
+        _hasPermission = true;
+        _isCheckingPermission = false;
+      });
+    } else if (status.isDenied) {
+      final result = await Permission.camera.request();
+      setState(() {
+        _hasPermission = result.isGranted;
+        _isCheckingPermission = false;
+      });
+    } else {
+      setState(() {
+        _hasPermission = false;
+        _isCheckingPermission = false;
+      });
+    }
+  }
   
   @override
   void dispose() {
@@ -22,7 +55,7 @@ class _QrScannerScreenState extends State<QrScannerScreen> {
   }
   
   void _handleBarcode(BarcodeCapture barcodeCapture) {
-    if (_hasScanned) return;
+    if (_hasScanned || !mounted) return;
     
     final barcodes = barcodeCapture.barcodes;
     if (barcodes.isEmpty) return;
@@ -30,21 +63,107 @@ class _QrScannerScreenState extends State<QrScannerScreen> {
     final barcode = barcodes.first;
     final rawValue = barcode.rawValue;
     
-    if (rawValue != null && rawValue.startsWith('otpauth://')) {
-      setState(() => _hasScanned = true);
-      Navigator.pop(context, rawValue);
+    if (rawValue != null && rawValue.trim().isNotEmpty) {
+      // Check if it's an otpauth URI
+      if (rawValue.startsWith('otpauth://')) {
+        setState(() => _hasScanned = true);
+        _controller.stop();
+        Navigator.pop(context, rawValue);
+      } else {
+        // Show error for non-otpauth QR codes
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Invalid QR code. Please scan an authenticator QR code.'),
+            duration: Duration(seconds: 2),
+          ),
+        );
+      }
     }
   }
   
   @override
   Widget build(BuildContext context) {
+    if (_isCheckingPermission) {
+      return Scaffold(
+        backgroundColor: Colors.black,
+        appBar: AppBar(
+          title: const Text('Scan QR Code'),
+          leading: IconButton(
+            icon: const Icon(Icons.close),
+            onPressed: () => Navigator.pop(context),
+          ),
+        ),
+        body: const Center(
+          child: CircularProgressIndicator(),
+        ),
+      );
+    }
+    
+    if (!_hasPermission) {
+      return Scaffold(
+        backgroundColor: Colors.black,
+        appBar: AppBar(
+          title: const Text('Scan QR Code'),
+          leading: IconButton(
+            icon: const Icon(Icons.close),
+            onPressed: () => Navigator.pop(context),
+          ),
+        ),
+        body: Center(
+          child: Padding(
+            padding: const EdgeInsets.all(24.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Icon(
+                  Icons.camera_alt_outlined,
+                  size: 64,
+                  color: AppTheme.textSecondary,
+                ),
+                const SizedBox(height: 24),
+                const Text(
+                  'Camera Permission Required',
+                  style: TextStyle(
+                    color: AppTheme.textPrimary,
+                    fontSize: 20,
+                    fontWeight: FontWeight.w600,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 12),
+                const Text(
+                  'Please grant camera permission to scan QR codes.',
+                  style: TextStyle(
+                    color: AppTheme.textSecondary,
+                    fontSize: 14,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 24),
+                ElevatedButton(
+                  onPressed: () async {
+                    await openAppSettings();
+                    _checkCameraPermission();
+                  },
+                  child: const Text('Open Settings'),
+                ),
+              ],
+            ),
+          ),
+        ),
+      );
+    }
+    
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
         title: const Text('Scan QR Code'),
         leading: IconButton(
           icon: const Icon(Icons.close),
-          onPressed: () => Navigator.pop(context),
+          onPressed: () {
+            _controller.stop();
+            Navigator.pop(context);
+          },
         ),
       ),
       body: Stack(
@@ -70,12 +189,12 @@ class _QrScannerScreenState extends State<QrScannerScreen> {
                   vertical: 12,
                 ),
                 decoration: BoxDecoration(
-                  color: AppTheme.darkSurface.withOpacity(0.9),
-                  borderRadius: BorderRadius.circular(8),
+                  color: AppTheme.backgroundSecondary.withOpacity(0.9),
+                  borderRadius: BorderRadius.zero, // Sharp corners
                 ),
-                child: const Text(
-                  'Position QR code within the frame',
-                  style: TextStyle(
+                child: Text(
+                  _hasScanned ? 'QR code scanned!' : 'Position QR code within the frame',
+                  style: const TextStyle(
                     color: AppTheme.textPrimary,
                     fontSize: 14,
                   ),
@@ -127,7 +246,7 @@ class _ScannerOverlay extends CustomPainter {
     
     // Draw corner markers
     final cornerPaint = Paint()
-      ..color = AppTheme.accentColor
+      ..color = AppTheme.accentPrimary
       ..strokeWidth = 4
       ..style = PaintingStyle.stroke;
     

@@ -84,8 +84,8 @@ class _AddBackupCodeSheetState extends State<AddBackupCodeSheet> {
         bottom: MediaQuery.of(context).viewInsets.bottom,
       ),
       decoration: const BoxDecoration(
-        color: AppTheme.darkSurface,
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+        color: AppTheme.backgroundSecondary,
+        borderRadius: BorderRadius.zero, // Sharp corners
       ),
       child: SingleChildScrollView(
         padding: AppConstants.screenPadding,

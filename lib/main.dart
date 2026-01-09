@@ -141,7 +141,7 @@ class _MainScreenState extends State<MainScreen> {
       ),
       bottomNavigationBar: Container(
         decoration: const BoxDecoration(
-          color: AppTheme.darkSurface,
+          color: AppTheme.backgroundSecondary,
           border: Border(
             top: BorderSide(color: AppTheme.dividerColor, width: 1),
           ),
@@ -154,17 +154,17 @@ class _MainScreenState extends State<MainScreen> {
             });
           },
           backgroundColor: Colors.transparent,
-          indicatorColor: AppTheme.accentColor.withOpacity(0.2),
+          indicatorColor: AppTheme.accentPrimary.withOpacity(0.2),
           labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
           destinations: const [
             NavigationDestination(
               icon: Icon(Icons.security, color: AppTheme.textSecondary),
-              selectedIcon: Icon(Icons.security, color: AppTheme.accentColor),
+              selectedIcon: Icon(Icons.security, color: AppTheme.accentPrimary),
               label: 'Authenticator',
             ),
             NavigationDestination(
               icon: Icon(Icons.backup, color: AppTheme.textSecondary),
-              selectedIcon: Icon(Icons.backup, color: AppTheme.accentColor),
+              selectedIcon: Icon(Icons.backup, color: AppTheme.accentPrimary),
               label: 'Backup Codes',
             ),
           ],

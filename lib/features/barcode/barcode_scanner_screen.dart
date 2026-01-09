@@ -76,8 +76,8 @@ class _BarcodeScannerScreenState extends State<BarcodeScannerScreen> {
                   vertical: 12,
                 ),
                 decoration: BoxDecoration(
-                  color: AppTheme.darkSurface.withOpacity(0.9),
-                  borderRadius: BorderRadius.circular(8),
+                  color: AppTheme.backgroundSecondary.withOpacity(0.9),
+                  borderRadius: BorderRadius.zero, // Sharp corners
                 ),
                 child: Text(
                   _hasScanned ? 'Barcode copied!' : 'Position barcode within the frame',
@@ -134,7 +134,7 @@ class _ScannerOverlay extends CustomPainter {
     
     // Draw corner markers
     final cornerPaint = Paint()
-      ..color = AppTheme.accentColor
+      ..color = AppTheme.accentPrimary
       ..strokeWidth = 4
       ..style = PaintingStyle.stroke;
     

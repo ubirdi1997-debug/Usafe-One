@@ -59,7 +59,7 @@ class _BackupCodesScreenState extends ConsumerState<BackupCodesScreen> {
     final emails = _getUniqueEmails(ref);
     
     return Scaffold(
-      backgroundColor: AppTheme.nearBlack,
+      backgroundColor: AppTheme.backgroundPrimary,
       body: SafeArea(
         child: Column(
           children: [
@@ -162,13 +162,13 @@ class _EmailFilterChip extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         decoration: BoxDecoration(
-          color: isSelected ? AppTheme.accentColor : AppTheme.darkSurfaceVariant,
-          borderRadius: BorderRadius.circular(20),
+          color: isSelected ? AppTheme.accentPrimary : AppTheme.backgroundTertiary,
+          borderRadius: BorderRadius.zero, // Sharp corners
         ),
         child: Text(
           label,
           style: TextStyle(
-            color: isSelected ? AppTheme.nearBlack : AppTheme.textPrimary,
+            color: isSelected ? AppTheme.backgroundPrimary : AppTheme.textPrimary,
             fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
           ),
         ),

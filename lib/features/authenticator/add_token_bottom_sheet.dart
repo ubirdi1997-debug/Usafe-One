@@ -36,7 +36,7 @@ class _AddTokenBottomSheetState extends State<AddTokenBottomSheet> {
     super.dispose();
   }
   
-  void _showQrScanner() async {
+  void _showQrScanner(WidgetRef ref) async {
     final result = await Navigator.push<String>(
       context,
       MaterialPageRoute(
@@ -45,18 +45,32 @@ class _AddTokenBottomSheetState extends State<AddTokenBottomSheet> {
       ),
     );
     
-    if (result != null) {
+    if (result != null && mounted) {
       final parsed = OtpauthParser.parse(result);
-      if (parsed != null && mounted) {
-        setState(() {
-          _secretController.text = parsed.secret;
-          _issuerController.text = parsed.issuer;
-          _accountController.text = parsed.accountName;
-          _algorithm = parsed.algorithm;
-          _digits = parsed.digits;
-          _period = parsed.period;
-          _isManualEntry = true;
-        });
+      if (parsed != null) {
+        // Auto-save if QR code has all required fields
+        final token = AuthenticatorToken(
+          id: generateId(),
+          secret: parsed.secret,
+          issuer: parsed.issuer,
+          accountName: parsed.accountName,
+          algorithm: parsed.algorithm,
+          digits: parsed.digits,
+          period: parsed.period,
+          createdAt: DateTime.now(),
+        );
+        
+        await ref.read(authenticatorProvider.notifier).addToken(token);
+        
+        if (mounted) {
+          Navigator.pop(context);
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Added: ${token.label}'),
+              duration: const Duration(seconds: 2),
+            ),
+          );
+        }
       } else if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Invalid QR code format')),
@@ -105,8 +119,8 @@ class _AddTokenBottomSheetState extends State<AddTokenBottomSheet> {
         bottom: MediaQuery.of(context).viewInsets.bottom,
       ),
       decoration: const BoxDecoration(
-        color: AppTheme.darkSurface,
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+        color: AppTheme.backgroundSecondary,
+        borderRadius: BorderRadius.zero, // Sharp corners
       ),
       child: SingleChildScrollView(
         padding: AppConstants.screenPadding,
@@ -127,10 +141,14 @@ class _AddTokenBottomSheetState extends State<AddTokenBottomSheet> {
               const SizedBox(height: AppConstants.spacingLarge),
               // QR Scanner button
               if (!_isManualEntry) ...[
-                ElevatedButton.icon(
-                  onPressed: _showQrScanner,
-                  icon: const Icon(Icons.qr_code_scanner),
-                  label: const Text('Scan QR Code'),
+                Consumer(
+                  builder: (context, ref, _) {
+                    return ElevatedButton.icon(
+                      onPressed: () => _showQrScanner(ref),
+                      icon: const Icon(Icons.qr_code_scanner),
+                      label: const Text('Scan QR Code'),
+                    );
+                  },
                 ),
                 const SizedBox(height: AppConstants.spacingMedium),
                 Row(

@@ -14,8 +14,8 @@ class CalculatorScreen extends StatefulWidget {
 class _CalculatorScreenState extends State<CalculatorScreen> {
   String _display = '0';
   String _expression = '';
-  double _result = 0;
-  String _operation = '';
+  double? _operand;
+  String? _operation;
   bool _shouldResetDisplay = false;
   
   void _onButtonPress(String value) {
@@ -23,27 +23,36 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
       if (value == 'C') {
         _display = '0';
         _expression = '';
-        _result = 0;
-        _operation = '';
+        _operand = null;
+        _operation = null;
         _shouldResetDisplay = false;
       } else if (value == '=') {
-        if (_operation.isNotEmpty) {
+        if (_operation != null && _operand != null) {
           _calculate();
-          _operation = '';
+          _operation = null;
+          _operand = null;
           _shouldResetDisplay = true;
         }
       } else if (['+', '-', '×', '÷'].contains(value)) {
-        if (_operation.isEmpty) {
-          _result = double.tryParse(_display) ?? 0;
-          _expression = _display;
-        } else {
+        final currentValue = double.tryParse(_display) ?? 0;
+        
+        if (_operation != null && _operand != null) {
+          // Chain operations: calculate previous, then set new operation
+          _operand = currentValue;
           _calculate();
+          _operand = _result;
+        } else {
+          // First operation
+          _operand = currentValue;
         }
+        
         _operation = value;
+        _expression = _display;
         _shouldResetDisplay = true;
       } else {
+        // Number or decimal point
         if (_shouldResetDisplay) {
-          _display = value;
+          _display = value == '.' ? '0.' : value;
           _shouldResetDisplay = false;
           _expression = '';
         } else {
@@ -61,34 +70,50 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
     });
   }
   
+  double _result = 0;
+  
   void _calculate() {
+    if (_operation == null || _operand == null) return;
+    
     final currentValue = double.tryParse(_display) ?? 0;
     
-    switch (_operation) {
+    switch (_operation!) {
       case '+':
-        _result += currentValue;
+        _result = _operand! + currentValue;
         break;
       case '-':
-        _result -= currentValue;
+        _result = _operand! - currentValue;
         break;
       case '×':
-        _result *= currentValue;
+        _result = _operand! * currentValue;
         break;
       case '÷':
         if (currentValue != 0) {
-          _result /= currentValue;
+          _result = _operand! / currentValue;
+        } else {
+          _display = 'Error';
+          return;
         }
         break;
     }
     
     // Format result
+    if (_result.isInfinite || _result.isNaN) {
+      _display = 'Error';
+      return;
+    }
+    
     if (_result == _result.truncateToDouble()) {
       _display = _result.toInt().toString();
     } else {
-      _display = _result.toStringAsFixed(10).replaceAll(RegExp(r'0*$'), '').replaceAll(RegExp(r'\.$'), '');
+      // Remove trailing zeros
+      String formatted = _result.toStringAsFixed(10);
+      formatted = formatted.replaceAll(RegExp(r'0+$'), '');
+      formatted = formatted.replaceAll(RegExp(r'\.$'), '');
+      _display = formatted;
     }
     
-    if (_display.isEmpty || _display == 'NaN') {
+    if (_display.isEmpty) {
       _display = '0';
     }
   }
@@ -96,7 +121,7 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppTheme.nearBlack,
+      backgroundColor: AppTheme.backgroundPrimary,
       appBar: AppBar(
         title: const Text('Calculator'),
         leading: IconButton(
@@ -120,9 +145,9 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
                     if (_expression.isNotEmpty)
                       Text(
                         _expression + ' ' + _operation,
-                        style: TextStyle(
+                        style: const TextStyle(
                           color: AppTheme.textTertiary,
-                          fontSize: 20,
+                          fontSize: 20, // --font-size-xl
                         ),
                       ),
                     const SizedBox(height: 8),
@@ -182,19 +207,20 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
                   _onButtonPress('0');
                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: AppTheme.darkSurface,
+                  backgroundColor: AppTheme.backgroundSecondary,
                   foregroundColor: AppTheme.textPrimary,
                   elevation: 0,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8),
+                  shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.zero, // Sharp corners
                   ),
-                  padding: const EdgeInsets.all(20),
+                  padding: EdgeInsets.zero,
+                  minimumSize: const Size(0, 48), // --button-height: 48px minimum
                 ),
                 child: const Text(
                   '0',
                   style: TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.w500,
+                    fontSize: 20, // --font-size-xl (Button font: 20px)
+                    fontWeight: FontWeight.w500, // --font-weight-medium
                   ),
                 ),
               ),
@@ -210,19 +236,20 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
                   _onButtonPress('.');
                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: AppTheme.darkSurface,
+                  backgroundColor: AppTheme.backgroundSecondary,
                   foregroundColor: AppTheme.textPrimary,
                   elevation: 0,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8),
+                  shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.zero, // Sharp corners
                   ),
-                  padding: const EdgeInsets.all(20),
+                  padding: EdgeInsets.zero,
+                  minimumSize: const Size(0, 48), // --button-height: 48px minimum
                 ),
                 child: const Text(
                   '.',
                   style: TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.w500,
+                    fontSize: 20, // --font-size-xl (Button font: 20px)
+                    fontWeight: FontWeight.w500, // --font-weight-medium
                   ),
                 ),
               ),
@@ -238,19 +265,20 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
                   _onButtonPress('=');
                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: AppTheme.accentColor,
+                  backgroundColor: AppTheme.accentPrimary,
                   foregroundColor: AppTheme.nearBlack,
                   elevation: 0,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8),
+                  shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.zero, // Sharp corners
                   ),
-                  padding: const EdgeInsets.all(20),
+                  padding: EdgeInsets.zero,
+                  minimumSize: const Size(0, 48), // --button-height: 48px minimum
                 ),
                 child: const Text(
                   '=',
                   style: TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.w500,
+                    fontSize: 20, // --font-size-xl (Button font: 20px)
+                    fontWeight: FontWeight.w500, // --font-weight-medium
                   ),
                 ),
               ),
@@ -273,7 +301,7 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
           Color textColor;
           
           if (isClear) {
-            backgroundColor = AppTheme.errorColor;
+            backgroundColor = AppTheme.error;
             textColor = AppTheme.textPrimary;
           } else if (isOperation) {
             backgroundColor = AppTheme.accentColor;
@@ -298,16 +326,17 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
                   backgroundColor: backgroundColor,
                   foregroundColor: textColor,
                   elevation: 0,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8),
+                  shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.zero, // Sharp corners
                   ),
-                  padding: const EdgeInsets.all(20),
+                  minimumSize: const Size(0, 48), // --button-height: 48px minimum
+                  padding: const EdgeInsets.all(20), // Keep padding for visual balance
                 ),
                 child: Text(
                   button,
                   style: TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.w500,
+                    fontSize: 20, // --font-size-xl (Button font: 20px)
+                    fontWeight: FontWeight.w500, // --font-weight-medium
                     color: textColor,
                   ),
                 ),

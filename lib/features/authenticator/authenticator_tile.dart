@@ -27,10 +27,10 @@ class AuthenticatorTile extends StatelessWidget {
       onTap: onTap,
       onLongPress: onLongPress,
       child: Container(
-        padding: AppConstants.tilePadding,
-        decoration: BoxDecoration(
-          color: AppTheme.darkSurface,
-          borderRadius: BorderRadius.circular(AppConstants.tileBorderRadius),
+        padding: AppConstants.tilePaddingInsets, // --tile-padding: 16px
+        decoration: const BoxDecoration(
+          color: AppTheme.backgroundSecondary, // --tile-background: #1a1a1a
+          borderRadius: BorderRadius.zero, // --tile-border-radius: 0px
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -43,9 +43,9 @@ class AuthenticatorTile extends StatelessWidget {
                   child: Text(
                     token.label,
                     style: const TextStyle(
-                      color: AppTheme.textPrimary,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w500,
+                      color: AppTheme.textPrimary, // White
+                      fontSize: 15, // --font-size-md (Service name: 15px)
+                      fontWeight: FontWeight.w500, // --font-weight-medium
                     ),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
@@ -54,36 +54,36 @@ class AuthenticatorTile extends StatelessWidget {
                 Text(
                   formatTimeRemaining(timeRemaining),
                   style: TextStyle(
-                    color: timeRemaining <= 5 ? AppTheme.errorColor : AppTheme.textSecondary,
-                    fontSize: 14,
+                    color: timeRemaining <= 5 ? AppTheme.error : AppTheme.textSecondary,
+                    fontSize: 13, // --font-size-sm
                     fontFeatures: const [FontFeature.tabularFigures()],
                   ),
                 ),
               ],
             ),
-            const SizedBox(height: AppConstants.spacingMedium),
+            SizedBox(height: AppConstants.tileGap), // --tile-gap: 12px
             // OTP Code
             Text(
               code,
               style: const TextStyle(
-                color: AppTheme.accentColor,
-                fontSize: 32,
-                fontWeight: FontWeight.w600,
+                color: AppTheme.textPrimary, // White (OTP code: 32px white)
+                fontSize: 32, // --tile-code-size: 32px
+                fontWeight: FontWeight.w600, // --font-weight-semibold
                 letterSpacing: 4,
-                fontFeatures: [FontFeature.tabularFigures()],
+                fontFeatures: [FontFeature.tabularFigures()], // tabular-nums
               ),
             ),
-            const SizedBox(height: AppConstants.spacingMedium),
-            // Progress indicator
+            SizedBox(height: AppConstants.tileGap), // --tile-gap: 12px
+            // Progress indicator (Countdown bar)
             ClipRRect(
-              borderRadius: BorderRadius.circular(2),
+              borderRadius: BorderRadius.zero,
               child: LinearProgressIndicator(
                 value: progress,
-                backgroundColor: AppTheme.darkSurfaceVariant,
+                backgroundColor: AppTheme.accentSubtle, // --countdown-background: rgba(5, 150, 105, 0.2)
                 valueColor: AlwaysStoppedAnimation<Color>(
-                  timeRemaining <= 5 ? AppTheme.errorColor : AppTheme.accentColor,
+                  timeRemaining <= 5 ? AppTheme.error : AppTheme.accentPrimary, // --countdown-fill: #059669
                 ),
-                minHeight: 2,
+                minHeight: AppConstants.tileCountdownHeight, // --countdown-height: 2px
               ),
             ),
           ],

@@ -53,7 +53,7 @@ class _AuthenticatorScreenState extends ConsumerState<AuthenticatorScreen> {
     final tokens = ref.watch(authenticatorProvider);
     
     return Scaffold(
-      backgroundColor: AppTheme.nearBlack,
+      backgroundColor: AppTheme.backgroundPrimary,
       body: SafeArea(
         child: tokens.isEmpty
             ? _EmptyState()
@@ -143,8 +143,8 @@ class _TokenActionsBottomSheet extends ConsumerWidget {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 20),
       decoration: const BoxDecoration(
-        color: AppTheme.darkSurface,
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+        color: AppTheme.backgroundSecondary,
+        borderRadius: BorderRadius.zero, // Sharp corners
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,

@@ -32,9 +32,9 @@ class BackupCodeSetTile extends ConsumerWidget {
       onTap: () => _showDetails(context, ref),
       child: Container(
         padding: AppConstants.tilePadding,
-        decoration: BoxDecoration(
-          color: AppTheme.darkSurface,
-          borderRadius: BorderRadius.circular(AppConstants.tileBorderRadius),
+        decoration: const BoxDecoration(
+          color: AppTheme.backgroundSecondary, // --tile-background: #1a1a1a
+          borderRadius: BorderRadius.zero, // --tile-border-radius: 0px
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -52,16 +52,16 @@ class BackupCodeSetTile extends ConsumerWidget {
                             : 'Backup Codes',
                         style: const TextStyle(
                           color: AppTheme.textPrimary,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500,
+                          fontSize: 15, // --font-size-md
+                          fontWeight: FontWeight.w500, // --font-weight-medium
                         ),
                       ),
                       const SizedBox(height: 4),
                       Text(
                         codeSet.email,
                         style: const TextStyle(
-                          color: AppTheme.textSecondary,
-                          fontSize: 14,
+                          color: AppTheme.textTertiary, // --text-tertiary: #52525b (Email: 13px #52525b)
+                          fontSize: 13, // --font-size-sm
                         ),
                       ),
                     ],
@@ -107,14 +107,14 @@ class _StatBadge extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       decoration: BoxDecoration(
         color: color.withOpacity(0.2),
-        borderRadius: BorderRadius.circular(4),
+        borderRadius: BorderRadius.zero, // Sharp corners
       ),
       child: Text(
         label,
         style: TextStyle(
           color: color,
-          fontSize: 12,
-          fontWeight: FontWeight.w500,
+          fontSize: 12, // --font-size-xs
+          fontWeight: FontWeight.w500, // --font-weight-medium
         ),
       ),
     );

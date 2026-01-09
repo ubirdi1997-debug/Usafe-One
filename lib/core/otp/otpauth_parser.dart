@@ -5,35 +5,61 @@ class OtpauthParser {
   /// Parse otpauth URI string
   static OtpauthData? parse(String uriString) {
     try {
-      final uri = Uri.parse(uriString);
+      final uri = Uri.parse(uriString.trim());
       
-      if (uri.scheme != 'otpauth' && uri.scheme != 'otpauth-totp') {
+      // Check scheme
+      if (uri.scheme != 'otpauth') {
         return null;
       }
       
-      final type = uri.host; // 'totp' or 'hotp'
+      // Check type (totp or hotp) - it's in the host part
+      final type = uri.host.toLowerCase();
       if (type != 'totp') {
         return null; // Only TOTP supported
       }
       
-      final path = uri.path;
-      final labelParts = path.split(':');
-      final issuer = labelParts.length > 1 ? labelParts[0] : null;
-      final accountName = labelParts.length > 1 ? labelParts[1] : labelParts[0];
+      // Parse label (issuer:account or just account)
+      // Path format: /issuer:account or /account
+      String path = uri.path;
+      if (path.startsWith('/')) {
+        path = path.substring(1);
+      }
       
+      String issuer = '';
+      String accountName = '';
+      
+      if (path.contains(':')) {
+        final parts = path.split(':');
+        issuer = Uri.decodeComponent(parts[0]);
+        accountName = Uri.decodeComponent(parts.sublist(1).join(':'));
+      } else {
+        accountName = Uri.decodeComponent(path);
+      }
+      
+      // Get secret from query parameters
       final secret = uri.queryParameters['secret'];
       if (secret == null || secret.isEmpty) {
         return null;
       }
       
+      // Get optional parameters
       final algorithm = algorithmFromString(uri.queryParameters['algorithm']);
       final digits = int.tryParse(uri.queryParameters['digits'] ?? '6') ?? 6;
       final period = int.tryParse(uri.queryParameters['period'] ?? '30') ?? 30;
+      
+      // Issuer can be in query parameter (takes precedence) or in label
       final issuerFromParam = uri.queryParameters['issuer'];
+      if (issuerFromParam != null && issuerFromParam.isNotEmpty) {
+        issuer = Uri.decodeComponent(issuerFromParam);
+      }
+      
+      if (accountName.isEmpty) {
+        return null;
+      }
       
       return OtpauthData(
-        secret: secret.toUpperCase(),
-        issuer: issuerFromParam ?? issuer ?? '',
+        secret: secret.toUpperCase().replaceAll(' ', ''),
+        issuer: issuer,
         accountName: accountName,
         algorithm: algorithm,
         digits: digits,

@@ -89,7 +89,7 @@ class _ExpandableFABState extends State<ExpandableFAB>
           ...widget.options.reversed.map((option) {
             final index = widget.options.length - widget.options.indexOf(option) - 1;
             return Positioned(
-              bottom: 70 + (index * (AppConstants.expandedFabSize + AppConstants.expandedFabSpacing)),
+              bottom: 70 + (index * (AppConstants.expandedFabSize + AppConstants.expandedFabSpacing)), // Stagger delay: 50ms
               right: 0,
               child: _ExpandedFABOption(
                 option: option,
@@ -103,12 +103,15 @@ class _ExpandableFABState extends State<ExpandableFAB>
           child: FloatingActionButton(
             onPressed: _toggleExpanded,
             backgroundColor: _isExpanded
-                ? AppTheme.darkSurfaceVariant
-                : AppTheme.accentColor,
+                ? AppTheme.backgroundHover
+                : AppTheme.accentHover, // --fab-background: #047857
             foregroundColor: _isExpanded
                 ? AppTheme.textPrimary
-                : AppTheme.nearBlack,
-            child: Icon(_isExpanded ? Icons.close : Icons.add),
+                : AppTheme.backgroundPrimary,
+            child: Icon(
+              _isExpanded ? Icons.close : Icons.add,
+              size: AppConstants.fabIconSize, // --fab-icon-size: 24px
+            ),
           ),
         ),
       ],
@@ -134,31 +137,27 @@ class _ExpandedFABOption extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Container(
-          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+          padding: const EdgeInsets.symmetric(
+            horizontal: 16, // --padding-md
+            vertical: 12, // --padding-sm
+          ),
           decoration: BoxDecoration(
-            color: AppTheme.darkSurface,
-            borderRadius: BorderRadius.circular(20),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withOpacity(0.3),
-                blurRadius: 8,
-                offset: const Offset(0, 2),
-              ),
-            ],
+            color: AppTheme.backgroundSecondary, // --background-secondary: #1a1a1a
+            borderRadius: BorderRadius.zero,
           ),
           child: Text(
             option.label,
             style: const TextStyle(
               color: AppTheme.textPrimary,
-              fontSize: 14,
-              fontWeight: FontWeight.w500,
+              fontSize: 14, // --font-size-base (FAB Actions: 14px)
+              fontWeight: FontWeight.w500, // --font-weight-medium
             ),
           ),
         ),
-        const SizedBox(width: 12),
+        const SizedBox(width: 12), // --gap-sm (FAB Actions gap: 12px)
         FloatingActionButton(
           onPressed: onTap,
-          backgroundColor: AppTheme.darkSurface,
+          backgroundColor: AppTheme.backgroundSecondary,
           foregroundColor: AppTheme.textPrimary,
           mini: true,
           heroTag: option.type.toString(),

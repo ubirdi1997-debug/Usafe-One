@@ -51,8 +51,8 @@ class BackupCodeDetailsSheet extends ConsumerWidget {
         maxHeight: MediaQuery.of(context).size.height * 0.9,
       ),
       decoration: const BoxDecoration(
-        color: AppTheme.darkSurface,
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+        color: AppTheme.backgroundSecondary,
+        borderRadius: BorderRadius.zero, // Sharp corners
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -64,7 +64,7 @@ class BackupCodeDetailsSheet extends ConsumerWidget {
             height: 4,
             decoration: BoxDecoration(
               color: AppTheme.textTertiary,
-              borderRadius: BorderRadius.circular(2),
+              borderRadius: BorderRadius.zero, // Sharp corners
             ),
           ),
           // Header
@@ -151,10 +151,10 @@ class _BackupCodeItem extends StatelessWidget {
       onTap: onTap,
       onLongPress: onLongPress,
       child: Container(
-        padding: const EdgeInsets.all(12),
+        padding: const EdgeInsets.all(12), // --padding-sm (Backup Code Item: 12px)
         decoration: BoxDecoration(
-          color: AppTheme.darkSurfaceVariant,
-          borderRadius: BorderRadius.circular(8),
+          color: AppTheme.backgroundSecondary, // --background-secondary: #1a1a1a
+          borderRadius: BorderRadius.zero,
           border: Border.all(
             color: code.isUsed
                 ? AppTheme.textTertiary.withOpacity(0.3)
@@ -166,17 +166,18 @@ class _BackupCodeItem extends StatelessWidget {
             Expanded(
               child: Text(
                 code.code,
-                style: TextStyle(
-                  color: code.isUsed
-                      ? AppTheme.textTertiary
-                      : AppTheme.accentColor,
-                  fontSize: 16,
-                  fontWeight: FontWeight.w500,
-                  fontFeatures: const [FontFeature.tabularFigures()],
-                  decoration: code.isUsed
-                      ? TextDecoration.lineThrough
-                      : TextDecoration.none,
-                ),
+                  style: TextStyle(
+                    color: code.isUsed
+                        ? AppTheme.textTertiary // --text-tertiary: #52525b (Used state)
+                        : AppTheme.textPrimary, // White (unused)
+                    fontSize: 14, // --font-size-base (Code font: 14px monospace)
+                    fontWeight: FontWeight.w500,
+                    fontFamily: 'ui-monospace', // --font-family-mono
+                    fontFeatures: const [FontFeature.tabularFigures()],
+                    decoration: code.isUsed
+                        ? TextDecoration.lineThrough // Used state: line-through
+                        : TextDecoration.none,
+                  ),
               ),
             ),
             if (code.isUsed)
@@ -186,15 +187,15 @@ class _BackupCodeItem extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                   decoration: BoxDecoration(
                     color: AppTheme.textTertiary.withOpacity(0.2),
-                    borderRadius: BorderRadius.circular(4),
+                    borderRadius: BorderRadius.zero, // Sharp corners
                   ),
                   child: const Text(
                     'Used',
-                    style: TextStyle(
-                      color: AppTheme.textTertiary,
-                      fontSize: 12,
-                      fontWeight: FontWeight.w500,
-                    ),
+                      style: TextStyle(
+                        color: AppTheme.textTertiary,
+                        fontSize: 12, // --font-size-xs
+                        fontWeight: FontWeight.w500, // --font-weight-medium
+                      ),
                   ),
                 ),
               ),
@@ -222,8 +223,8 @@ class _CodeActionsSheet extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 20),
       decoration: const BoxDecoration(
-        color: AppTheme.darkSurface,
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+        color: AppTheme.backgroundSecondary,
+        borderRadius: BorderRadius.zero, // Sharp corners
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -254,10 +255,10 @@ class _CodeActionsSheet extends StatelessWidget {
             },
           ),
           ListTile(
-            leading: const Icon(Icons.delete, color: AppTheme.errorColor),
+            leading: const Icon(Icons.delete, color: AppTheme.error),
             title: const Text(
               'Delete',
-              style: TextStyle(color: AppTheme.errorColor),
+              style: TextStyle(color: AppTheme.error),
             ),
             onTap: () {
               Navigator.pop(context);
@@ -280,7 +281,7 @@ class _CodeActionsSheet extends StatelessWidget {
                       },
                       child: const Text(
                         'Delete',
-                        style: TextStyle(color: AppTheme.errorColor),
+                        style: const TextStyle(color: AppTheme.error),
                       ),
                     ),
                   ],
