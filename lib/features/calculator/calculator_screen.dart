@@ -298,9 +298,9 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
                           ],
                         ),
                     ],
-                    if (_expression.isNotEmpty && !_isGstMode)
+                    if (_expression.isNotEmpty && !_isGstMode && _operation != null)
                       Text(
-                        _expression + ' ' + _operation,
+                        '$_expression $_operation',
                         style: const TextStyle(
                           color: AppTheme.textTertiary,
                           fontSize: 20, // --font-size-xl
@@ -450,7 +450,6 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
     return Expanded(
       child: Row(
         children: buttons.map((button) {
-          final isNumber = RegExp(r'[0-9.]').hasMatch(button);
           final isOperation = ['+', '-', '×', '÷', '='].contains(button);
           final isClear = button == 'C';
           

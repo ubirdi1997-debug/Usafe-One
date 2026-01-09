@@ -31,7 +31,7 @@ class BackupCodeSetTile extends ConsumerWidget {
     return GestureDetector(
       onTap: () => _showDetails(context, ref),
       child: Container(
-        padding: AppConstants.tilePadding,
+        padding: AppConstants.tilePaddingInsets,
         decoration: const BoxDecoration(
           color: AppTheme.backgroundSecondary, // --tile-background: #1a1a1a
           borderRadius: BorderRadius.zero, // --tile-border-radius: 0px

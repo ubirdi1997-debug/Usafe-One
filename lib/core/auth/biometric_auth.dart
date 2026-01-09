@@ -21,8 +21,8 @@ class BiometricAuth {
     String reason = 'Authenticate to access sensitive data',
   }) async {
     try {
-      final isAvailable = await isAvailable();
-      if (!isAvailable) {
+      final available = await isAvailable();
+      if (!available) {
         return false;
       }
       

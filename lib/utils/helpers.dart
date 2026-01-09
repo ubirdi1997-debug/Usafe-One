@@ -32,7 +32,7 @@ Future<void> copyToClipboard(
   await Clipboard.setData(ClipboardData(text: text));
   
   // Haptic feedback
-  if (await Vibration.hasVibrator() ?? false) {
+  if (await Vibration.hasVibrator() == true) {
     await Vibration.vibrate(duration: 50);
   }
   
