@@ -52,7 +52,7 @@ android {
 
     defaultConfig {
         applicationId "com.usafe.one"
-        minSdkVersion 21
+        minSdkVersion flutter.minSdkVersion
         targetSdkVersion 34
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
