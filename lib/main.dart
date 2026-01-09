@@ -166,7 +166,7 @@ class _MainScreenState extends State<MainScreen> {
                 borderRadius: BorderRadius.circular(8),
               ),
               child: const Icon(
-                Icons.security,
+                Icons.shield,
                 color: AppTheme.backgroundPrimary,
                 size: 20,
               ),
@@ -219,13 +219,13 @@ class _MainScreenState extends State<MainScreen> {
           labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
           destinations: const [
             NavigationDestination(
-              icon: Icon(Icons.security, color: AppTheme.textSecondary),
-              selectedIcon: Icon(Icons.security, color: AppTheme.accentPrimary),
+              icon: Icon(Icons.shield, color: AppTheme.textSecondary),
+              selectedIcon: Icon(Icons.shield, color: AppTheme.accentPrimary),
               label: 'Auth',
             ),
             NavigationDestination(
-              icon: Icon(Icons.backup, color: AppTheme.textSecondary),
-              selectedIcon: Icon(Icons.backup, color: AppTheme.accentPrimary),
+              icon: Icon(Icons.vpn_key, color: AppTheme.textSecondary),
+              selectedIcon: Icon(Icons.vpn_key, color: AppTheme.accentPrimary),
               label: 'Backup',
             ),
             NavigationDestination(
@@ -234,8 +234,8 @@ class _MainScreenState extends State<MainScreen> {
               label: 'Calculator',
             ),
             NavigationDestination(
-              icon: Icon(Icons.note, color: AppTheme.textSecondary),
-              selectedIcon: Icon(Icons.note, color: AppTheme.accentPrimary),
+              icon: Icon(Icons.description, color: AppTheme.textSecondary),
+              selectedIcon: Icon(Icons.description, color: AppTheme.accentPrimary),
               label: 'Notes',
             ),
           ],
@@ -247,18 +247,18 @@ class _MainScreenState extends State<MainScreen> {
           options: const [
             FABOption(
               type: FABOptionType.authenticator,
-              icon: Icons.security,
-              label: 'Add Token',
+              icon: Icons.qr_code_scanner,
+              label: 'Add Authenticator',
             ),
             FABOption(
               type: FABOptionType.backupCodes,
-              icon: Icons.backup,
-              label: 'Add Backup Codes',
+              icon: Icons.vpn_key,
+              label: 'Add Backup Code',
             ),
             FABOption(
               type: FABOptionType.secureNotes,
-              icon: Icons.note,
-              label: 'Add Note',
+              icon: Icons.description,
+              label: 'New Secure Note',
             ),
             FABOption(
               type: FABOptionType.calculator,

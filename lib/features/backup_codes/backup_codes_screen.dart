@@ -190,7 +190,7 @@ class _EmptyState extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Icon(
-              Icons.backup,
+              Icons.vpn_key,
               size: 80,
               color: AppTheme.textTertiary,
             ),

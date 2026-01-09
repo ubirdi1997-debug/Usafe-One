@@ -32,9 +32,9 @@ class BackupCodeSetTile extends ConsumerWidget {
       onTap: () => _showDetails(context, ref),
       child: Container(
         padding: AppConstants.tilePaddingInsets,
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           color: AppTheme.backgroundSecondary, // --tile-background: #1a1a1a
-          borderRadius: BorderRadius.circular(12), // --tile-border-radius: 0px
+          borderRadius: BorderRadius.circular(12), // --radius: 0.75rem
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

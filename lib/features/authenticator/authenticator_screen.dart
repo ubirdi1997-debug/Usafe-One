@@ -98,7 +98,7 @@ class _EmptyState extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Icon(
-              Icons.security,
+              Icons.shield,
               size: 80,
               color: AppTheme.textTertiary,
             ),
@@ -142,7 +142,7 @@ class _TokenActionsBottomSheet extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 20),
-      decoration: const BoxDecoration(
+      decoration: BoxDecoration(
         color: AppTheme.backgroundSecondary,
         borderRadius: BorderRadius.circular(12),
       ),

@@ -118,7 +118,7 @@ class _AddTokenBottomSheetState extends State<AddTokenBottomSheet> {
       padding: EdgeInsets.only(
         bottom: MediaQuery.of(context).viewInsets.bottom,
       ),
-      decoration: const BoxDecoration(
+      decoration: BoxDecoration(
         color: AppTheme.backgroundSecondary,
         borderRadius: BorderRadius.circular(12),
       ),
@@ -145,7 +145,7 @@ class _AddTokenBottomSheetState extends State<AddTokenBottomSheet> {
                   builder: (context, ref, _) {
                     return ElevatedButton.icon(
                       onPressed: () => _showQrScanner(ref),
-                      icon: const Icon(Icons.qr_code_scanner),
+                      icon: const Icon(Icons.qr_code),
                       label: const Text('Scan QR Code'),
                     );
                   },

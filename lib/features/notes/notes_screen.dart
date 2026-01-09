@@ -139,7 +139,7 @@ class _EmptyState extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Icon(
-              Icons.note_outlined,
+              Icons.description,
               size: 80,
               color: AppTheme.textTertiary,
             ),
@@ -214,7 +214,7 @@ class _AddNoteSheetState extends State<AddNoteSheet> {
       padding: EdgeInsets.only(
         bottom: MediaQuery.of(context).viewInsets.bottom,
       ),
-      decoration: const BoxDecoration(
+      decoration: BoxDecoration(
         color: AppTheme.backgroundSecondary,
         borderRadius: BorderRadius.circular(12),
       ),

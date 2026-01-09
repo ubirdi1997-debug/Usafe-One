@@ -83,7 +83,7 @@ class _AddBackupCodeSheetState extends State<AddBackupCodeSheet> {
       padding: EdgeInsets.only(
         bottom: MediaQuery.of(context).viewInsets.bottom,
       ),
-      decoration: const BoxDecoration(
+      decoration: BoxDecoration(
         color: AppTheme.backgroundSecondary,
         borderRadius: BorderRadius.circular(12),
       ),
