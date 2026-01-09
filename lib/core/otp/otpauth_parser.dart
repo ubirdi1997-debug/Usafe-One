@@ -1,4 +1,3 @@
-import 'package:uri/uri.dart';
 import '../otp/totp_generator.dart';
 
 /// Parse otpauth:// URI

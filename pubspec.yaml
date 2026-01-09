@@ -26,9 +26,6 @@ dependencies:
   # JSON Encoding
   json_annotation: ^4.8.1
   
-  # URI Parsing
-  uri: ^4.1.0
-  
   # Haptic Feedback
   vibration: ^1.8.4
   
