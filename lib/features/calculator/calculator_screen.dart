@@ -472,7 +472,7 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
           return Expanded(
             flex: flex,
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 4),
+              padding: const EdgeInsets.symmetric(horizontal: 2),
               child: ElevatedButton(
                 onPressed: () {
                   HapticFeedback.selectionClick();
@@ -485,8 +485,8 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12),
                   ),
-                  minimumSize: const Size(0, 48), // --button-height: 48px minimum
-                  padding: const EdgeInsets.all(20), // Keep padding for visual balance
+                  minimumSize: const Size(0, 60), // Increased height to prevent overlap
+                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 12),
                 ),
                 child: Text(
                   button,

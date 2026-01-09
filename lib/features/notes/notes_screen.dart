@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../core/notes/note_model.dart';
 import '../../core/auth/biometric_auth.dart';
+import '../../core/auth/biometric_auth_dialog.dart';
 import '../../theme/app_theme.dart';
 import '../../utils/constants.dart';
 import '../../utils/helpers.dart';
@@ -27,24 +28,16 @@ class _NotesScreenState extends ConsumerState<NotesScreen> {
   }
   
   Future<void> _openNote(BuildContext context, SecureNote note) async {
-    // Require biometric authentication
-    final authenticated = await BiometricAuth.authenticate(
-      reason: 'Authenticate to view secure note',
+    // Show biometric authentication dialog
+    final authenticated = await showDialog<bool>(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => BiometricAuthDialog(
+        reason: 'Authenticate to view secure note',
+      ),
     );
     
-    if (!authenticated) {
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Authentication required'),
-            duration: Duration(seconds: 2),
-          ),
-        );
-      }
-      return;
-    }
-    
-    if (mounted) {
+    if (authenticated == true && mounted) {
       await Navigator.push(
         context,
         MaterialPageRoute(

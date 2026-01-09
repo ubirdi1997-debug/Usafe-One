@@ -8,7 +8,8 @@ import 'features/backup_codes/add_backup_code_sheet.dart';
 import 'features/notes/notes_screen.dart' show NotesScreen, AddNoteSheet;
 import 'features/calculator/calculator_screen.dart';
 import 'features/barcode/barcode_scanner_screen.dart';
-import 'utils/expandable_fab.dart';
+import 'utils/draggable_fab.dart';
+import 'utils/expandable_fab.dart' show FABOption, FABOptionType;
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -157,19 +158,12 @@ class _MainScreenState extends State<MainScreen> {
         title: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            // Logo placeholder - you can replace with actual logo asset
-            Container(
+            // App icon from assets
+            Image.asset(
+              'assets/icon.png',
               width: 32,
               height: 32,
-              decoration: BoxDecoration(
-                color: AppTheme.accentPrimary,
-                borderRadius: BorderRadius.circular(8),
-              ),
-              child: const Icon(
-                Icons.shield,
-                color: AppTheme.backgroundPrimary,
-                size: 20,
-              ),
+              fit: BoxFit.contain,
             ),
             const SizedBox(width: 8),
             const Text(
@@ -241,9 +235,7 @@ class _MainScreenState extends State<MainScreen> {
           ],
         ),
       ),
-      floatingActionButton: Padding(
-        padding: const EdgeInsets.only(bottom: 20),
-        child: ExpandableFAB(
+      floatingActionButton: DraggableExpandableFAB(
           options: const [
             FABOption(
               type: FABOptionType.authenticator,
@@ -277,7 +269,6 @@ class _MainScreenState extends State<MainScreen> {
           onCalculator: _showCalculator,
           onBarcodeScanner: _showBarcodeScanner,
         ),
-      ),
     );
   }
 }

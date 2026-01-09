@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/services.dart';
 import '../../core/notes/note_model.dart';
 import '../../core/auth/biometric_auth.dart';
+import '../../core/auth/biometric_auth_dialog.dart';
 import '../../theme/app_theme.dart';
 import '../../utils/constants.dart';
 import '../../utils/helpers.dart';
@@ -91,29 +92,23 @@ class _NoteEditorScreenState extends ConsumerState<NoteEditorScreen> {
   }
   
   Future<void> _copyContent() async {
-    // Require biometric authentication
-    final authenticated = await BiometricAuth.authenticate(
-      reason: 'Authenticate to copy note content',
+    // Show biometric authentication dialog
+    final authenticated = await showDialog<bool>(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => BiometricAuthDialog(
+        reason: 'Authenticate to copy note content',
+      ),
     );
     
-    if (!authenticated) {
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Authentication required'),
-            duration: Duration(seconds: 2),
-          ),
-        );
-      }
-      return;
+    if (authenticated == true && mounted) {
+      await copyToClipboard(
+        _contentController.text,
+        context,
+        successMessage: 'Note content copied',
+        requireBiometric: false, // Already authenticated
+      );
     }
-    
-    await copyToClipboard(
-      _contentController.text,
-      context,
-      successMessage: 'Note content copied',
-      requireBiometric: false, // Already authenticated
-    );
   }
   
   @override
