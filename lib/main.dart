@@ -5,6 +5,7 @@ import 'features/authenticator/authenticator_screen.dart';
 import 'features/authenticator/add_token_bottom_sheet.dart';
 import 'features/backup_codes/backup_codes_screen.dart';
 import 'features/backup_codes/add_backup_code_sheet.dart';
+import 'features/notes/notes_screen.dart' show NotesScreen, AddNoteSheet;
 import 'features/calculator/calculator_screen.dart';
 import 'features/barcode/barcode_scanner_screen.dart';
 import 'utils/expandable_fab.dart';
@@ -49,11 +50,13 @@ class _MainScreenState extends State<MainScreen> {
   final List<Widget> _screens = [
     const AuthenticatorScreen(),
     const BackupCodesScreen(),
+    const NotesScreen(),
   ];
   
   final List<String> _titles = [
     'Authenticator',
     'Backup Codes',
+    'Secure Notes',
   ];
   
   void _showAuthenticatorSheet() {
@@ -126,6 +129,31 @@ class _MainScreenState extends State<MainScreen> {
     );
   }
   
+  void _showAddNoteSheet() {
+    // Check if we're already on notes screen
+    if (_currentIndex == 2) {
+      showModalBottomSheet(
+        context: context,
+        isScrollControlled: true,
+        backgroundColor: Colors.transparent,
+        builder: (context) => const AddNoteSheet(),
+      );
+    } else {
+      // Switch to notes tab and show sheet
+      setState(() => _currentIndex = 2);
+      Future.delayed(const Duration(milliseconds: 100), () {
+        if (mounted) {
+          showModalBottomSheet(
+            context: context,
+            isScrollControlled: true,
+            backgroundColor: Colors.transparent,
+            builder: (context) => const AddNoteSheet(),
+          );
+        }
+      });
+    }
+  }
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -167,6 +195,11 @@ class _MainScreenState extends State<MainScreen> {
               selectedIcon: Icon(Icons.backup, color: AppTheme.accentPrimary),
               label: 'Backup Codes',
             ),
+            NavigationDestination(
+              icon: Icon(Icons.note, color: AppTheme.textSecondary),
+              selectedIcon: Icon(Icons.note, color: AppTheme.accentPrimary),
+              label: 'Notes',
+            ),
           ],
         ),
       ),
@@ -185,6 +218,11 @@ class _MainScreenState extends State<MainScreen> {
               label: 'Add Backup Codes',
             ),
             FABOption(
+              type: FABOptionType.secureNotes,
+              icon: Icons.note,
+              label: 'Add Note',
+            ),
+            FABOption(
               type: FABOptionType.calculator,
               icon: Icons.calculate,
               label: 'Calculator',
@@ -197,6 +235,7 @@ class _MainScreenState extends State<MainScreen> {
           ],
           onAuthenticator: _showAuthenticatorSheet,
           onBackupCodes: _showBackupCodesSheet,
+          onSecureNotes: _showAddNoteSheet,
           onCalculator: _showCalculator,
           onBarcodeScanner: _showBarcodeScanner,
         ),

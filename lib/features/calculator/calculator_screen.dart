@@ -17,6 +17,8 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
   double? _operand;
   String? _operation;
   bool _shouldResetDisplay = false;
+  bool _isGstMode = false;
+  double _gstRate = 18.0; // Default GST rate
   
   void _onButtonPress(String value) {
     setState(() {
@@ -27,13 +29,28 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
         _operation = null;
         _shouldResetDisplay = false;
       } else if (value == '=') {
-        if (_operation != null && _operand != null) {
+        if (_isGstMode) {
+          // In GST mode, = calculates GST total
+          final baseAmount = double.tryParse(_display) ?? 0;
+          final total = baseAmount + _calculateGstAmount();
+          setState(() {
+            if (total == total.truncateToDouble()) {
+              _display = total.toInt().toString();
+            } else {
+              _display = total.toStringAsFixed(2);
+            }
+          });
+        } else if (_operation != null && _operand != null) {
           _calculate();
           _operation = null;
           _operand = null;
           _shouldResetDisplay = true;
         }
       } else if (['+', '-', '×', '÷'].contains(value)) {
+        if (_isGstMode) {
+          // In GST mode, operations are disabled - just show error
+          return;
+        }
         final currentValue = double.tryParse(_display) ?? 0;
         
         if (_operation != null && _operand != null) {
@@ -118,6 +135,43 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
     }
   }
   
+  /// Calculate GST amount
+  double _calculateGstAmount() {
+    final baseAmount = double.tryParse(_display) ?? 0;
+    return baseAmount * (_gstRate / 100);
+  }
+  
+  /// Calculate GST total (base + GST)
+  double _calculateGstTotal() {
+    final baseAmount = double.tryParse(_display) ?? 0;
+    return baseAmount + _calculateGstAmount();
+  }
+  
+  /// Calculate GST from total amount
+  void _calculateGst() {
+    final total = double.tryParse(_display) ?? 0;
+    if (total > 0 && _gstRate > 0) {
+      // Calculate base amount from total
+      final baseAmount = total / (1 + (_gstRate / 100));
+      setState(() {
+        if (baseAmount == baseAmount.truncateToDouble()) {
+          _display = baseAmount.toInt().toString();
+        } else {
+          _display = baseAmount.toStringAsFixed(2);
+        }
+      });
+    }
+  }
+  
+  /// Format number as currency
+  String _formatCurrency(double amount) {
+    if (amount == amount.truncateToDouble()) {
+      return '₹${amount.toInt()}';
+    } else {
+      return '₹${amount.toStringAsFixed(2)}';
+    }
+  }
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -128,6 +182,27 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
           icon: const Icon(Icons.close),
           onPressed: () => Navigator.pop(context),
         ),
+        actions: [
+          TextButton(
+            onPressed: () {
+              setState(() {
+                _isGstMode = !_isGstMode;
+                if (_isGstMode) {
+                  _display = '0';
+                  _expression = '';
+                  _operand = null;
+                  _operation = null;
+                }
+              });
+            },
+            child: Text(
+              _isGstMode ? 'Standard' : 'GST',
+              style: TextStyle(
+                color: _isGstMode ? AppTheme.accentPrimary : AppTheme.textSecondary,
+              ),
+            ),
+          ),
+        ],
       ),
       body: SafeArea(
         child: Column(
@@ -142,7 +217,88 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
                   mainAxisAlignment: MainAxisAlignment.end,
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
-                    if (_expression.isNotEmpty)
+                    if (_isGstMode) ...[
+                      // GST Rate selector
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 16),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            const Text(
+                              'GST Rate: ',
+                              style: TextStyle(
+                                color: AppTheme.textSecondary,
+                                fontSize: 14,
+                              ),
+                            ),
+                            ...([0.0, 5.0, 12.0, 18.0, 28.0].map((rate) {
+                              return Padding(
+                                padding: const EdgeInsets.only(left: 8),
+                                child: GestureDetector(
+                                  onTap: () {
+                                    setState(() {
+                                      _gstRate = rate;
+                                      _calculateGst();
+                                    });
+                                  },
+                                  child: Container(
+                                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                                    decoration: BoxDecoration(
+                                      color: _gstRate == rate
+                                          ? AppTheme.accentPrimary
+                                          : AppTheme.backgroundSecondary,
+                                      borderRadius: BorderRadius.zero,
+                                    ),
+                                    child: Text(
+                                      '${rate.toInt()}%',
+                                      style: TextStyle(
+                                        color: _gstRate == rate
+                                            ? AppTheme.backgroundPrimary
+                                            : AppTheme.textPrimary,
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              );
+                            })),
+                          ],
+                        ),
+                      ),
+                      // GST Calculation Display
+                      if (_display != '0' && _display != 'Error')
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            Text(
+                              'Base: ${_formatCurrency(double.tryParse(_display) ?? 0)}',
+                              style: const TextStyle(
+                                color: AppTheme.textSecondary,
+                                fontSize: 14,
+                              ),
+                            ),
+                            Text(
+                              'GST (${_gstRate.toInt()}%): ${_formatCurrency(_calculateGstAmount())}',
+                              style: const TextStyle(
+                                color: AppTheme.textSecondary,
+                                fontSize: 14,
+                              ),
+                            ),
+                            const SizedBox(height: 8),
+                            Text(
+                              'Total: ${_formatCurrency(_calculateGstTotal())}',
+                              style: const TextStyle(
+                                color: AppTheme.accentPrimary,
+                                fontSize: 20,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                            const SizedBox(height: 16),
+                          ],
+                        ),
+                    ],
+                    if (_expression.isNotEmpty && !_isGstMode)
                       Text(
                         _expression + ' ' + _operation,
                         style: const TextStyle(
@@ -150,7 +306,8 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
                           fontSize: 20, // --font-size-xl
                         ),
                       ),
-                    const SizedBox(height: 8),
+                    if (!_isGstMode || _display == '0' || _display == 'Error')
+                      const SizedBox(height: 8),
                     Text(
                       _display,
                       style: const TextStyle(

@@ -1,13 +1,34 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:vibration/vibration.dart';
+import '../core/auth/biometric_auth.dart';
 
-/// Copy to clipboard with haptic feedback
+/// Copy to clipboard with biometric authentication and haptic feedback
 Future<void> copyToClipboard(
   String text,
   BuildContext context, {
   String? successMessage,
+  bool requireBiometric = true,
 }) async {
+  // Require biometric authentication for sensitive data
+  if (requireBiometric) {
+    final authenticated = await BiometricAuth.authenticate(
+      reason: 'Authenticate to copy sensitive data',
+    );
+    
+    if (!authenticated) {
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Authentication required'),
+            duration: Duration(seconds: 2),
+          ),
+        );
+      }
+      return;
+    }
+  }
+  
   await Clipboard.setData(ClipboardData(text: text));
   
   // Haptic feedback

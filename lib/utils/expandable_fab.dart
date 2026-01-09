@@ -7,6 +7,7 @@ class ExpandableFAB extends StatefulWidget {
   final List<FABOption> options;
   final VoidCallback? onAuthenticator;
   final VoidCallback? onBackupCodes;
+  final VoidCallback? onSecureNotes;
   final VoidCallback? onCalculator;
   final VoidCallback? onBarcodeScanner;
   
@@ -15,6 +16,7 @@ class ExpandableFAB extends StatefulWidget {
     required this.options,
     this.onAuthenticator,
     this.onBackupCodes,
+    this.onSecureNotes,
     this.onCalculator,
     this.onBarcodeScanner,
   });
@@ -67,6 +69,9 @@ class _ExpandableFABState extends State<ExpandableFAB>
           break;
         case FABOptionType.backupCodes:
           widget.onBackupCodes?.call();
+          break;
+        case FABOptionType.secureNotes:
+          widget.onSecureNotes?.call();
           break;
         case FABOptionType.calculator:
           widget.onCalculator?.call();
@@ -185,6 +190,7 @@ class FABOption {
 enum FABOptionType {
   authenticator,
   backupCodes,
+  secureNotes,
   calculator,
   barcodeScanner,
 }

@@ -31,6 +31,9 @@ dependencies:
   
   # Permission Handling
   permission_handler: ^11.2.0
+  
+  # Biometric Authentication
+  local_auth: ^2.3.0
 
 dev_dependencies:
   flutter_test:
