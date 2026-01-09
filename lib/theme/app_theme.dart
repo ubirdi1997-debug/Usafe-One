@@ -44,7 +44,7 @@ class AppTheme {
           fontWeight: FontWeight.w500,
         ),
       ),
-      cardTheme: CardTheme(
+      cardTheme: CardThemeData(
         color: darkSurface,
         elevation: 0,
         shape: RoundedRectangleBorder(
@@ -96,7 +96,7 @@ class AppTheme {
         thickness: 1,
         space: 1,
       ),
-      dialogTheme: DialogTheme(
+      dialogTheme: DialogThemeData(
         backgroundColor: darkSurface,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(16),

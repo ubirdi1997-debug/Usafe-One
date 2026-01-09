@@ -155,7 +155,7 @@ class _MainScreenState extends State<MainScreen> {
           },
           backgroundColor: Colors.transparent,
           indicatorColor: AppTheme.accentColor.withOpacity(0.2),
-          labelBehavior: NavigationDestinationLabelBehavior.always,
+          labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
           destinations: const [
             NavigationDestination(
               icon: Icon(Icons.security, color: AppTheme.textSecondary),
