@@ -247,7 +247,7 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
                                       color: _gstRate == rate
                                           ? AppTheme.accentPrimary
                                           : AppTheme.backgroundSecondary,
-                                      borderRadius: BorderRadius.zero,
+                                      borderRadius: BorderRadius.circular(12),
                                     ),
                                     child: Text(
                                       '${rate.toInt()}%',
@@ -367,8 +367,8 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
                   backgroundColor: AppTheme.backgroundSecondary,
                   foregroundColor: AppTheme.textPrimary,
                   elevation: 0,
-                  shape: const RoundedRectangleBorder(
-                    borderRadius: BorderRadius.zero, // Sharp corners
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
                   ),
                   padding: EdgeInsets.zero,
                   minimumSize: const Size(0, 48), // --button-height: 48px minimum
@@ -396,8 +396,8 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
                   backgroundColor: AppTheme.backgroundSecondary,
                   foregroundColor: AppTheme.textPrimary,
                   elevation: 0,
-                  shape: const RoundedRectangleBorder(
-                    borderRadius: BorderRadius.zero, // Sharp corners
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
                   ),
                   padding: EdgeInsets.zero,
                   minimumSize: const Size(0, 48), // --button-height: 48px minimum
@@ -425,8 +425,8 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
                   backgroundColor: AppTheme.accentPrimary,
                   foregroundColor: AppTheme.nearBlack,
                   elevation: 0,
-                  shape: const RoundedRectangleBorder(
-                    borderRadius: BorderRadius.zero, // Sharp corners
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
                   ),
                   padding: EdgeInsets.zero,
                   minimumSize: const Size(0, 48), // --button-height: 48px minimum
@@ -482,8 +482,8 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
                   backgroundColor: backgroundColor,
                   foregroundColor: textColor,
                   elevation: 0,
-                  shape: const RoundedRectangleBorder(
-                    borderRadius: BorderRadius.zero, // Sharp corners
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
                   ),
                   minimumSize: const Size(0, 48), // --button-height: 48px minimum
                   padding: const EdgeInsets.all(20), // Keep padding for visual balance

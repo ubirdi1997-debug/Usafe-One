@@ -190,7 +190,7 @@ class _QrScannerScreenState extends State<QrScannerScreen> {
                 ),
                 decoration: BoxDecoration(
                   color: AppTheme.backgroundSecondary.withOpacity(0.9),
-                  borderRadius: BorderRadius.zero, // Sharp corners
+                  borderRadius: BorderRadius.circular(12),
                 ),
                 child: Text(
                   _hasScanned ? 'QR code scanned!' : 'Position QR code within the frame',

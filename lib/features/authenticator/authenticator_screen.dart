@@ -144,7 +144,7 @@ class _TokenActionsBottomSheet extends ConsumerWidget {
       padding: const EdgeInsets.symmetric(vertical: 20),
       decoration: const BoxDecoration(
         color: AppTheme.backgroundSecondary,
-        borderRadius: BorderRadius.zero, // Sharp corners
+        borderRadius: BorderRadius.circular(12),
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,

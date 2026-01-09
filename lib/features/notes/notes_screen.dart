@@ -216,7 +216,7 @@ class _AddNoteSheetState extends State<AddNoteSheet> {
       ),
       decoration: const BoxDecoration(
         color: AppTheme.backgroundSecondary,
-        borderRadius: BorderRadius.zero,
+        borderRadius: BorderRadius.circular(12),
       ),
       child: SingleChildScrollView(
         padding: AppConstants.screenPadding,

@@ -50,9 +50,9 @@ class BackupCodeDetailsSheet extends ConsumerWidget {
       constraints: BoxConstraints(
         maxHeight: MediaQuery.of(context).size.height * 0.9,
       ),
-      decoration: const BoxDecoration(
+      decoration: BoxDecoration(
         color: AppTheme.backgroundSecondary,
-        borderRadius: BorderRadius.zero, // Sharp corners
+        borderRadius: BorderRadius.circular(12),
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -64,7 +64,7 @@ class BackupCodeDetailsSheet extends ConsumerWidget {
             height: 4,
             decoration: BoxDecoration(
               color: AppTheme.textTertiary,
-              borderRadius: BorderRadius.zero, // Sharp corners
+              borderRadius: BorderRadius.circular(12),
             ),
           ),
           // Header
@@ -154,7 +154,7 @@ class _BackupCodeItem extends StatelessWidget {
         padding: const EdgeInsets.all(12), // --padding-sm (Backup Code Item: 12px)
         decoration: BoxDecoration(
           color: AppTheme.backgroundSecondary, // --background-secondary: #1a1a1a
-          borderRadius: BorderRadius.zero,
+          borderRadius: BorderRadius.circular(12),
           border: Border.all(
             color: code.isUsed
                 ? AppTheme.textTertiary.withOpacity(0.3)
@@ -187,7 +187,7 @@ class _BackupCodeItem extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                   decoration: BoxDecoration(
                     color: AppTheme.textTertiary.withOpacity(0.2),
-                    borderRadius: BorderRadius.zero, // Sharp corners
+                    borderRadius: BorderRadius.circular(12),
                   ),
                   child: const Text(
                     'Used',
@@ -222,9 +222,9 @@ class _CodeActionsSheet extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 20),
-      decoration: const BoxDecoration(
+      decoration: BoxDecoration(
         color: AppTheme.backgroundSecondary,
-        borderRadius: BorderRadius.zero, // Sharp corners
+        borderRadius: BorderRadius.circular(12),
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,

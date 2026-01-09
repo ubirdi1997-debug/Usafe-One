@@ -50,13 +50,8 @@ class _MainScreenState extends State<MainScreen> {
   final List<Widget> _screens = [
     const AuthenticatorScreen(),
     const BackupCodesScreen(),
+    const CalculatorScreen(),
     const NotesScreen(),
-  ];
-  
-  final List<String> _titles = [
-    'Authenticator',
-    'Backup Codes',
-    'Secure Notes',
   ];
   
   void _showAuthenticatorSheet() {
@@ -157,21 +152,55 @@ class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppTheme.nearBlack,
+      backgroundColor: AppTheme.backgroundPrimary,
       appBar: AppBar(
-        title: Text(_titles[_currentIndex]),
+        title: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            // Logo placeholder - you can replace with actual logo asset
+            Container(
+              width: 32,
+              height: 32,
+              decoration: BoxDecoration(
+                color: AppTheme.accentPrimary,
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: const Icon(
+                Icons.security,
+                color: AppTheme.backgroundPrimary,
+                size: 20,
+              ),
+            ),
+            const SizedBox(width: 8),
+            const Text(
+              'uSafe One',
+              style: TextStyle(
+                color: AppTheme.textPrimary,
+                fontSize: 18,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ],
+        ),
         centerTitle: true,
         elevation: 0,
+        bottom: PreferredSize(
+          preferredSize: const Size.fromHeight(1),
+          child: Container(
+            height: 1,
+            color: AppTheme.borderColor,
+          ),
+        ),
       ),
       body: IndexedStack(
         index: _currentIndex,
         children: _screens,
       ),
       bottomNavigationBar: Container(
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           color: AppTheme.backgroundSecondary,
           border: Border(
-            top: BorderSide(color: AppTheme.dividerColor, width: 1),
+            top: BorderSide(color: AppTheme.borderColor, width: 1),
           ),
         ),
         child: NavigationBar(
@@ -180,20 +209,29 @@ class _MainScreenState extends State<MainScreen> {
             setState(() {
               _currentIndex = index;
             });
+            // Handle calculator navigation
+            if (index == 2) {
+              // Calculator is already in the stack, just switch
+            }
           },
           backgroundColor: Colors.transparent,
-          indicatorColor: AppTheme.accentPrimary.withOpacity(0.2),
+          indicatorColor: Colors.transparent,
           labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
           destinations: const [
             NavigationDestination(
               icon: Icon(Icons.security, color: AppTheme.textSecondary),
               selectedIcon: Icon(Icons.security, color: AppTheme.accentPrimary),
-              label: 'Authenticator',
+              label: 'Auth',
             ),
             NavigationDestination(
               icon: Icon(Icons.backup, color: AppTheme.textSecondary),
               selectedIcon: Icon(Icons.backup, color: AppTheme.accentPrimary),
-              label: 'Backup Codes',
+              label: 'Backup',
+            ),
+            NavigationDestination(
+              icon: Icon(Icons.calculate, color: AppTheme.textSecondary),
+              selectedIcon: Icon(Icons.calculate, color: AppTheme.accentPrimary),
+              label: 'Calculator',
             ),
             NavigationDestination(
               icon: Icon(Icons.note, color: AppTheme.textSecondary),

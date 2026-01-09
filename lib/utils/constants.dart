@@ -11,13 +11,13 @@ class AppConstants {
   static const int defaultDigits = 6;
   static const int defaultPeriod = 30;
   
-  // Border Radius
-  static const double borderRadiusNone = 0.0; // --border-radius-none
-  static const double borderRadiusSm = 4.0; // --border-radius-sm
-  static const double borderRadiusMd = 8.0; // --border-radius-md
-  static const double borderRadiusLg = 12.0; // --border-radius-lg
-  static const double borderRadiusXl = 16.0; // --border-radius-xl
-  static const double borderRadiusFull = 9999.0; // --border-radius-full
+  // Border Radius - Matching Figma (--radius: 0.75rem = 12px)
+  static const double borderRadiusNone = 0.0;
+  static const double borderRadiusSm = 8.0; // calc(var(--radius) - 4px) = 8px
+  static const double borderRadiusMd = 10.0; // calc(var(--radius) - 2px) = 10px
+  static const double borderRadiusLg = 12.0; // --radius: 0.75rem = 12px
+  static const double borderRadiusXl = 16.0; // calc(var(--radius) + 4px) = 16px
+  static const double borderRadiusFull = 9999.0;
   
   // Screen Padding
   static const double screenPaddingX = 24.0; // --screen-padding-x
@@ -54,7 +54,7 @@ class AppConstants {
   static const double buttonPaddingX = 16.0; // --button-padding-x
   static const double buttonPaddingY = 16.0; // --button-padding-y
   static const double buttonFontSize = 15.0; // --button-font-size
-  static const double buttonBorderRadius = 0.0; // --button-border-radius
+  static const double buttonBorderRadius = 12.0; // --radius: 0.75rem (rounded-lg)
   
   // FAB
   static const double fabSize = 56.0; // --fab-size
@@ -66,7 +66,7 @@ class AppConstants {
   static const double expandedFabSpacing = 12.0; // --gap-sm
   
   // Authenticator Tile
-  static const double tileBorderRadius = 0.0; // --tile-border-radius
+  static const double tileBorderRadius = 12.0; // --radius: 0.75rem (rounded-xl)
   static const double tileGap = 12.0; // --tile-gap
   static const double tileIconSize = 24.0; // --tile-icon-size
   static const double tileCodeSize = 32.0; // --tile-code-size
@@ -75,7 +75,7 @@ class AppConstants {
   // Input Fields
   static const double inputPaddingX = 16.0; // --input-padding-x
   static const double inputPaddingY = 12.0; // --input-padding-y
-  static const double inputBorderRadius = 0.0; // --input-border-radius
+  static const double inputBorderRadius = 12.0; // --radius: 0.75rem (rounded-lg)
   static const double inputFontSize = 15.0; // --input-font-size
   
   // Countdown Bar

@@ -163,7 +163,7 @@ class _EmailFilterChip extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         decoration: BoxDecoration(
           color: isSelected ? AppTheme.accentPrimary : AppTheme.backgroundTertiary,
-          borderRadius: BorderRadius.zero, // Sharp corners
+          borderRadius: BorderRadius.circular(12),
         ),
         child: Text(
           label,

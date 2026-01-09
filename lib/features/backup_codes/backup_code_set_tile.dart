@@ -34,7 +34,7 @@ class BackupCodeSetTile extends ConsumerWidget {
         padding: AppConstants.tilePaddingInsets,
         decoration: const BoxDecoration(
           color: AppTheme.backgroundSecondary, // --tile-background: #1a1a1a
-          borderRadius: BorderRadius.zero, // --tile-border-radius: 0px
+          borderRadius: BorderRadius.circular(12), // --tile-border-radius: 0px
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -107,7 +107,7 @@ class _StatBadge extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       decoration: BoxDecoration(
         color: color.withOpacity(0.2),
-        borderRadius: BorderRadius.zero, // Sharp corners
+        borderRadius: BorderRadius.circular(12),
       ),
       child: Text(
         label,

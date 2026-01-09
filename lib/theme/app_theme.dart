@@ -2,41 +2,39 @@ import 'package:flutter/material.dart';
 
 /// Dark-first theme configuration - Matching Figma design tokens
 class AppTheme {
-  // Background Colors
-  static const Color backgroundPrimary = Color(0xFF0F0F0F); // --background-primary
-  static const Color backgroundSecondary = Color(0xFF1A1A1A); // --background-secondary
-  static const Color backgroundTertiary = Color(0xFF121212); // --background-tertiary
-  static const Color backgroundQuaternary = Color(0xFF151515); // --background-quaternary
-  static const Color backgroundHover = Color(0xFF202020); // --background-hover
+  // Background Colors - Matching Figma theme.css
+  static const Color backgroundPrimary = Color(0xFF0A0A0A); // --background: #0a0a0a
+  static const Color backgroundSecondary = Color(0xFF1A1A1A); // --card: #1a1a1a
+  static const Color backgroundTertiary = Color(0xFF2A2A2A); // --secondary: #2a2a2a
+  static const Color backgroundHover = Color(0xFF2A2A2A); // --secondary for hover
   
-  // Accent Colors
-  static const Color accentPrimary = Color(0xFF059669); // --accent-primary
-  static const Color accentHover = Color(0xFF047857); // --accent-hover
-  static const Color accentDark = Color(0xFF065F46); // --accent-dark
-  static const Color accentLight = Color(0xFF10B981); // --accent-light
-  static const Color accentSubtle = Color.fromRGBO(5, 150, 105, 0.1); // --accent-subtle
+  // Accent Colors - Cyan from Figma
+  static const Color accentPrimary = Color(0xFF00D9FF); // --primary: #00d9ff
+  static const Color accentHover = Color(0xFF00B8D9); // Slightly darker cyan
+  static const Color accentSubtle = Color.fromRGBO(0, 217, 255, 0.1); // --primary/10
   
-  // Text Colors
-  static const Color textPrimary = Color(0xFFFFFFFF); // --text-primary
-  static const Color textSecondary = Color(0xFF71717A); // --text-secondary
-  static const Color textTertiary = Color(0xFF52525B); // --text-tertiary
-  static const Color textQuaternary = Color(0xFF3F3F46); // --text-quaternary
-  static const Color textDisabled = Color(0xFF27272A); // --text-disabled
+  // Text Colors - Matching Figma
+  static const Color textPrimary = Color(0xFFF5F5F5); // --foreground: #f5f5f5
+  static const Color textSecondary = Color(0xFF999999); // --muted-foreground: #999999
+  static const Color textTertiary = Color(0xFF999999); // --muted-foreground
   
-  // Status Colors
-  static const Color error = Color(0xFFDC2626); // --error
-  static const Color success = Color(0xFF059669); // --success
-  static const Color warning = Color(0xFFF59E0B); // --warning
+  // Status Colors - Matching Figma
+  static const Color error = Color(0xFFFF3B30); // --destructive: #ff3b30
+  static const Color success = Color(0xFF00FF88); // --chart-4: #00ff88
+  static const Color warning = Color(0xFFFFAA00); // --chart-5: #ffaa00
+  
+  // Border Colors
+  static const Color borderColor = Color(0xFF2A2A2A); // --border: #2a2a2a
   
   // Legacy aliases for backward compatibility
   static const Color nearBlack = backgroundPrimary;
   static const Color darkSurface = backgroundSecondary;
-  static const Color darkSurfaceVariant = backgroundHover;
+  static const Color darkSurfaceVariant = backgroundTertiary;
   static const Color accentColor = accentPrimary;
   static const Color accentColorDark = accentHover;
   static const Color errorColor = error;
   static const Color successColor = success;
-  static const Color dividerColor = Color(0xFF3A3A3A);
+  static const Color dividerColor = borderColor;
   
   /// Get dark theme
   static ThemeData get darkTheme {
@@ -72,8 +70,8 @@ class AppTheme {
       cardTheme: CardThemeData(
         color: backgroundSecondary,
         elevation: 0,
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.zero, // --border-radius-none
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12), // --radius: 0.75rem
         ),
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
@@ -83,8 +81,8 @@ class AppTheme {
           elevation: 0,
           minimumSize: const Size(0, 48), // --button-height
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16), // --button-padding
-          shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.zero, // --button-border-radius
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12), // --radius: 0.75rem
           ),
           textStyle: const TextStyle(
             fontSize: 15, // --button-font-size
@@ -105,21 +103,21 @@ class AppTheme {
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
         fillColor: backgroundSecondary, // --input-background
-        border: const OutlineInputBorder(
-          borderRadius: BorderRadius.zero, // --input-border-radius
-          borderSide: BorderSide.none,
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12), // --radius: 0.75rem
+          borderSide: const BorderSide(color: borderColor, width: 1),
         ),
-        enabledBorder: const OutlineInputBorder(
-          borderRadius: BorderRadius.zero, // --input-border-radius
-          borderSide: BorderSide.none,
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: const BorderSide(color: borderColor, width: 1),
         ),
-        focusedBorder: const OutlineInputBorder(
-          borderRadius: BorderRadius.zero, // --input-border-radius
-          borderSide: BorderSide(color: accentPrimary, width: 2),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: const BorderSide(color: accentPrimary, width: 2),
         ),
-        errorBorder: const OutlineInputBorder(
-          borderRadius: BorderRadius.zero, // --input-border-radius
-          borderSide: BorderSide(color: error, width: 1),
+        errorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: const BorderSide(color: error, width: 1),
         ),
         contentPadding: const EdgeInsets.symmetric(
           horizontal: 16, // --input-padding-x
@@ -141,8 +139,8 @@ class AppTheme {
       ),
       dialogTheme: DialogThemeData(
         backgroundColor: backgroundSecondary,
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.zero, // --border-radius-none
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12), // --radius: 0.75rem
         ),
         titleTextStyle: const TextStyle(
           color: textPrimary,
@@ -157,17 +155,17 @@ class AppTheme {
       bottomSheetTheme: const BottomSheetThemeData(
         backgroundColor: backgroundSecondary,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.zero, // --border-radius-none
+          borderRadius: BorderRadius.vertical(top: Radius.circular(12)), // --radius: 0.75rem
         ),
       ),
       snackBarTheme: SnackBarThemeData(
-        backgroundColor: backgroundHover,
+        backgroundColor: backgroundSecondary,
         contentTextStyle: const TextStyle(
           color: textPrimary,
           fontSize: 14, // --font-size-base
         ),
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.zero, // --border-radius-none
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12), // --radius: 0.75rem
         ),
         behavior: SnackBarBehavior.floating,
       ),

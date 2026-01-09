@@ -77,7 +77,7 @@ class _BarcodeScannerScreenState extends State<BarcodeScannerScreen> {
                 ),
                 decoration: BoxDecoration(
                   color: AppTheme.backgroundSecondary.withOpacity(0.9),
-                  borderRadius: BorderRadius.zero, // Sharp corners
+                  borderRadius: BorderRadius.circular(12),
                 ),
                 child: Text(
                   _hasScanned ? 'Barcode copied!' : 'Position barcode within the frame',

@@ -85,7 +85,7 @@ class _AddBackupCodeSheetState extends State<AddBackupCodeSheet> {
       ),
       decoration: const BoxDecoration(
         color: AppTheme.backgroundSecondary,
-        borderRadius: BorderRadius.zero, // Sharp corners
+        borderRadius: BorderRadius.circular(12),
       ),
       child: SingleChildScrollView(
         padding: AppConstants.screenPadding,

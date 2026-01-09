@@ -108,8 +108,8 @@ class _ExpandableFABState extends State<ExpandableFAB>
           child: FloatingActionButton(
             onPressed: _toggleExpanded,
             backgroundColor: _isExpanded
-                ? AppTheme.backgroundHover
-                : AppTheme.accentHover, // --fab-background: #047857
+                ? AppTheme.backgroundTertiary
+                : AppTheme.accentPrimary, // --primary: #00d9ff
             foregroundColor: _isExpanded
                 ? AppTheme.textPrimary
                 : AppTheme.backgroundPrimary,
@@ -147,8 +147,12 @@ class _ExpandedFABOption extends StatelessWidget {
             vertical: 12, // --padding-sm
           ),
           decoration: BoxDecoration(
-            color: AppTheme.backgroundSecondary, // --background-secondary: #1a1a1a
-            borderRadius: BorderRadius.zero,
+            color: AppTheme.backgroundSecondary, // --card: #1a1a1a
+            borderRadius: BorderRadius.circular(12), // --radius: 0.75rem
+            border: Border.all(
+              color: AppTheme.borderColor,
+              width: 1,
+            ),
           ),
           child: Text(
             option.label,
@@ -160,13 +164,22 @@ class _ExpandedFABOption extends StatelessWidget {
           ),
         ),
         const SizedBox(width: 12), // --gap-sm (FAB Actions gap: 12px)
-        FloatingActionButton(
-          onPressed: onTap,
-          backgroundColor: AppTheme.backgroundSecondary,
-          foregroundColor: AppTheme.textPrimary,
-          mini: true,
-          heroTag: option.type.toString(),
-          child: Icon(option.icon),
+        Container(
+          width: 48,
+          height: 48,
+          decoration: BoxDecoration(
+            color: AppTheme.accentSubtle, // bg-primary/20
+            shape: BoxShape.circle,
+          ),
+          child: IconButton(
+            onPressed: onTap,
+            icon: Icon(
+              option.icon,
+              color: AppTheme.accentPrimary,
+              size: 20,
+            ),
+            padding: EdgeInsets.zero,
+          ),
         ),
       ],
     );

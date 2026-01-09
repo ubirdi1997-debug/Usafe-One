@@ -24,9 +24,9 @@ class NoteTile extends StatelessWidget {
       onTap: onTap,
       child: Container(
         padding: AppConstants.tilePaddingInsets,
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           color: AppTheme.backgroundSecondary,
-          borderRadius: BorderRadius.zero,
+          borderRadius: BorderRadius.circular(12),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
