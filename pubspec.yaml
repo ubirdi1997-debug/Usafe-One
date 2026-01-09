@@ -1,0 +1,50 @@
+name: usafe_one
+description: A dark-first, minimal, ultra-fast security app with TOTP authenticator and backup codes manager.
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  
+  # State Management
+  flutter_riverpod: ^2.4.9
+  riverpod_annotation: ^2.3.3
+  
+  # TOTP & Crypto
+  crypto: ^3.0.3
+  
+  # QR Code Scanning
+  mobile_scanner: ^5.2.2
+  
+  # Secure Storage
+  flutter_secure_storage: ^9.0.0
+  
+  # JSON Encoding
+  json_annotation: ^4.8.1
+  
+  # URI Parsing
+  uri: ^4.1.0
+  
+  # Haptic Feedback
+  vibration: ^1.8.4
+  
+  # Permission Handling
+  permission_handler: ^11.2.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^3.0.1
+  build_runner: ^2.4.7
+  riverpod_generator: ^2.3.9
+  json_serializable: ^6.7.1
+
+flutter:
+  uses-material-design: true
+  
+  # No assets for v1
+
